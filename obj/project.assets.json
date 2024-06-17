@@ -8642,11 +8642,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\NurseCourse\\NurseCourse.csproj",
+      "projectUniqueName": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\Debut\\nuevo\\Curso_virtual_enfermeras\\NurseCourse.csproj",
       "projectName": "NurseCourse",
-      "projectPath": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\NurseCourse\\NurseCourse.csproj",
+      "projectPath": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\Debut\\nuevo\\Curso_virtual_enfermeras\\NurseCourse.csproj",
       "packagesPath": "C:\\Users\\VICTOR123\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\NurseCourse\\obj\\",
+      "outputPath": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\Debut\\nuevo\\Curso_virtual_enfermeras\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\VICTOR123\\AppData\\Roaming\\NuGet\\NuGet.Config",

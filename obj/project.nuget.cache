@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RhcdzVos6032yItnNtFKkkxYZUFXL+zRMAbrGXXYxbnx6GkrQ3FATlHWDTx3fcJsuG84/EupR3QLNY0713YUgg==",
+  "dgSpecHash": "4zXl17XSu4c2PixuN4hTQMOSt2jpRogQnM8T4WtKnVt0YQh1En7L9VT6Cpz101YdkrHo+0GObyWj0DU8PPZRCg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\NurseCourse\\NurseCourse.csproj",
+  "projectFilePath": "C:\\Users\\VICTOR123\\OneDrive\\Imágenes\\Debut\\nuevo\\Curso_virtual_enfermeras\\NurseCourse.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\VICTOR123\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\VICTOR123\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
