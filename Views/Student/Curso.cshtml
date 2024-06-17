@@ -1,0 +1,266 @@
+@using NurseCourse.Models
+@{  
+        var counter = 0;
+    Layout = "~/Views/Shared/_Layout2.cshtml"; // Utiliza este layout si tienes uno, o define null para no usar ningún layout
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #F5F5F5;
+            background-size: cover;
+            background-blend-mode: darken;
+        }
+        .animation:hover {
+          transform: translateY(-3px);
+          border-bottom: 3px solid ;
+          background-color: #dbdbdb;
+          transition: transform 0.2s;
+        }
+        .titlenurse {
+            background-color: #D9D9D9;
+            display: flex;
+            padding: 10px;
+            padding-left: 15px;
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+        }
+        form {
+            background-color: #F5F5F5;
+            padding: 20px;
+            width: 500px;
+        }
+        .imgsection {
+            display: flex;
+            justify-content: flex-end;
+            margin-left: auto; 
+        }
+        .subtitle {
+            padding: 2%;
+            background-color: black;
+            color: white;
+            width: 600px;
+        }
+        .container {
+            flex-direction: column;
+            display: flex;
+        }
+        .titlemod{
+            margin: 1%;
+            padding: 1%;
+        }
+        .horizontal{
+            margin: 1%;
+            display: flex;
+            flex-direction: row;
+        }
+        .desc{
+            margin: 1%;
+            padding: 1%;
+        }
+    </style>
+</head>
+<body>
+<div class="titlenurse">
+    <h1 class="">Curso</h1>
+    <div class="imgsection"><img src="https://cdn.icon-icons.com/icons2/3005/PNG/512/modules_apps_icon_188198.png" alt="Curso" style="width: 100px; height: 100px;"></div>
+    
+</div>
+<div>
+    <label style="margin:10px"><em>IMPORTANTE: Solo tiene una oportunidad para realizar el Exámen Diagnóstico y el Exámen Final</em></label>
+</div>
+<div class="accordion" id="accordionExample">
+
+    
+    @if(Model.Item1 == null || Model.Item2 == null)
+    {
+        <p>No hay modulos registrados</p>
+    }
+    else{
+        var idmodulos = Model.Item2.Count;
+        var iterador = (int)(@ViewData["iterador"] ?? 0);
+        var idcurso = (int)(@ViewData["id"] ?? 0);
+        var modulo = Model.Item1;
+        var idModulo = modulo[@counter].moduloID;
+        var RuteVideo = "tablaModulos"+modulo[@counter].moduloID;
+        var RutePdf = "tablaModulospdf"+modulo[@counter].moduloID;
+        <div class="horizontal">
+                @if(ViewData["Link1"] == null || ViewData["Link2"] == null){
+                    <p>No hay links</p>
+                }else{
+
+                    @* <button type="button" class="btn btn-primary subtitle" onclick="window.location.href='@ViewData["Link1"]'">Diagnóstico (Una Oportunidad)</button>
+                    if(iterador == idmodulos-1)
+                    {
+                        <button type="button" class="btn btn-primary subtitle" onclick="window.location.href='@ViewData["Link2"]'">Examen final (Una Oportunidad)</button>
+                    } *@
+                    <button type="button" class="btn btn-primary subtitle" id="btnDiagnostico" onclick="realizarDiagnostico('@ViewData["Link1"]')">Diagnóstico (Una Oportunidad)</button>
+                    if (iterador == idmodulos - 1)
+                    {
+                        <button type="button" class="btn btn-primary subtitle" id="btnExamenFinal" onclick="realizarExamenFinal('@ViewData["Link2"]')" disabled>Examen final (Una Oportunidad)</button>
+                    }
+                }
+            </div>
+
+            <div class="accordion-item disabled" style="margin: 1%;">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button disabled class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    @modulo[@iterador].nombre @* #@modulo[@iterador].moduloID  *@                           
+                </button>
+                <div class="titlemod">@modulo[@iterador].nombre</div>
+                </h2>
+                <div class="form-group my-2">
+                    <div class="desc">Descripcion modulo:  @modulo[@iterador].descripcion</div>
+                    <button class="btn btn-primary mx-3" onclick="actualizarNotas(@idModulo, 2)">Ver módulo</button>
+                            
+                </div>                            
+                        
+                <div class="desc" id="@RuteVideo">
+                    <!-- Aquí se mostrará la tabla de módulos -->
+                </div>
+                <div class="desc" id="@RutePdf">
+                    <!-- Aquí se mostrará la tabla de módulos -->
+                </div>
+                <button class="btn btn-primary mx-3" onclick="mostrarSiguienteModulo(@iterador, @idcurso, @idmodulos)">Siguiente</button>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                            
+                </div>
+                </div>
+            </div>
+            
+        
+    }
+    
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var xxx = @counter;
+        var valor = sessionStorage.getItem('UserRole');
+        console.log("UserRole:"+valor);
+        if(valor == 2){
+            console.log("Usted tiene Rol de Usuario, Acceso denegado");
+            window.location.href = "http://localhost:5053/Nurse/Index";
+        }
+        // $(document).ready(function () {
+        //     $('#moduloDropdown').change(function () {
+        //         var moduloIdSeleccionado = $(this).val();
+        //         console.log(moduloIdSeleccionado);
+        //     });
+        //     //
+        //         // Mostrar alerta al cargar la página
+        //         alert("Debe completar el examen diagnóstico para poder comenzar el curso.");
+
+        //         // Deshabilitar todo hasta que se complete el diagnóstico
+        //         $('button, a').not('#btnDiagnostico').prop('disabled', true);
+        // });
+        // //
+        // var diagnosticoRealizado = false;
+        //     var examenFinalRealizado = false;
+
+        //     function realizarDiagnostico(url) {
+        //         if (!diagnosticoRealizado) {
+        //             window.open(url, '_blank');
+        //             diagnosticoRealizado = true;
+        //             $('#btnDiagnostico').prop('disabled', true); // Deshabilitar el botón de diagnóstico
+        //             $('#btnExamenFinal').prop('disabled', false); // Habilitar el botón de examen final
+        //             $('button, a').not('#btnDiagnostico, #btnExamenFinal').prop('disabled', false); // Habilitar el resto de botones y enlaces
+        //         } else {
+        //             alert("Ya has realizado el diagnóstico anteriormente.");
+        //         }
+        //     }
+
+        //     function realizarExamenFinal(url) {
+        //         if (!examenFinalRealizado) {
+        //             window.open(url, '_blank');
+        //             examenFinalRealizado = true;
+        //             $('#btnExamenFinal').prop('disabled', true); // Deshabilitar el botón de examen final
+        //         } else {
+        //             alert("Ya has realizado el examen final anteriormente.");
+        //         }
+        //     }
+            $(document).ready(function () {
+                // Verificar si el diagnóstico ya se completó
+                var diagnosticoRealizado = localStorage.getItem('diagnosticoRealizado') === 'true';
+                var examenFinalRealizado = localStorage.getItem('examenFinalRealizado') === 'true';
+
+                // Mostrar alerta solo si el diagnóstico no se ha completado
+                if (!diagnosticoRealizado) {
+                    alert("Debe completar el examen diagnóstico primero para poder comenzar el curso.");
+                    $('button, a').not('#btnDiagnostico').prop('disabled', true);
+                }
+
+                // Configurar botones según el estado almacenado
+                $('#btnDiagnostico').prop('disabled', diagnosticoRealizado);
+                $('#btnExamenFinal').prop('disabled', !diagnosticoRealizado || examenFinalRealizado);
+            });
+
+            function realizarDiagnostico(url) {
+                if (!localStorage.getItem('diagnosticoRealizado')) {
+                    window.open(url, '_blank');
+                    localStorage.setItem('diagnosticoRealizado', 'true');
+                    $('#btnDiagnostico').prop('disabled', true); // Deshabilitar el botón de diagnóstico
+                    $('#btnExamenFinal').prop('disabled', false); // Habilitar el botón de examen final
+                    $('button, a').not('#btnDiagnostico, #btnExamenFinal').prop('disabled', false); // Habilitar el resto de botones y enlaces
+                } else {
+                    alert("Ya has realizado el diagnóstico anteriormente.");
+                }
+            }
+
+            function realizarExamenFinal(url) {
+                if (!localStorage.getItem('examenFinalRealizado')) {
+                    window.open(url, '_blank');
+                    localStorage.setItem('examenFinalRealizado', 'true');
+                    $('#btnExamenFinal').prop('disabled', true); // Deshabilitar el botón de examen final
+                } else {
+                    alert("Ya has realizado el examen final anteriormente.");
+                }
+            }
+        function actualizarNotas(holax, iduser) {
+            console.log(holax+" "+iduser);
+
+            fetch('http://localhost:5053/api/contenidos/ByModulo/' + holax, {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data['$values']);
+                var modulos = data['$values'];
+                var linkvideo1 = 'http://localhost:9000/contenidos/32e05a70-59df-4752-82ce-ef8c28a7f5c3_Desktop%202024.05.07%20-%2009.22.19.02.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minio%2F20240508%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240508T224950Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=43d011130412e221147ee86db2f2cf1928c4840f6c312a3917068ea60b2e7c55';
+                var linkvideo = String(modulos[1].url);
+                var modulos = data['$values'];
+                var video = '<video width="640" height="360" controls><source src="'+linkvideo+'">Tu navegador no soporta la reproducción de vídeo.</video>';
+
+                var pdf = '<a href="'+modulos[0].url+'"><button type="button" class="btn btn-primary">Descargar PDF</button></a>'
+                // Mostrar la tabla de módulos en el elemento con ID 'tablaModulos'
+                console.log(video);
+                $('#tablaModulos'+holax).html(video);
+                $('#tablaModulospdf'+holax).html(pdf);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('No hay contenido en este modulo',error);
+            });
+        }
+        var counter = @counter; // Inicializa el contador desde el valor de la variable Razor
+
+        function mostrarSiguienteModulo(iteradore, idcurso, largo) {
+            if(iteradore == largo-1){
+                alert("No hay mas modulos");
+                return;
+            }
+            console.log("iterador:"+iteradore, "idcurso:"+idcurso, "largo:"+largo);
+            var suma = iteradore + 1;
+            window.location.href = "http://localhost:5053/Student/Curso/"+idcurso+"?iterador="+suma;
+        }
+        
+    </script>
+    }
+</body>
+</html>

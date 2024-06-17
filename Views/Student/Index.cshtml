@@ -1,0 +1,140 @@
+@using NurseCourse.Models
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml"; // Utiliza este layout si tienes uno, o define null para no usar ningún layout
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #F5F5F5;
+            background-size: cover;
+            background-blend-mode: darken;
+        }
+        .animation:hover {
+          transform: translateY(-3px);
+          border-bottom: 3px solid ;
+          background-color: #dbdbdb;
+          transition: transform 0.2s;
+        }
+        .titlenurse {
+            background-color: #D9D9D9;
+            display: flex;
+            padding: 10px;
+            padding-left: 15px;
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+        }
+        form {
+            background-color: #F5F5F5;
+            padding: 20px;
+            width: 500px;
+        }
+        .imgsection {
+            display: flex;
+            justify-content: flex-end;
+            margin-left: auto; 
+        }
+        .subtitle {
+            padding: 2%;
+            background-color: black;
+            color: white;
+            width: 600px;
+        }
+        .container {
+            flex-direction: column;
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+<div class="titlenurse">
+    <h1 class="">Lista de cursos</h1>
+    <div class="imgsection"><img src="https://cdn.icon-icons.com/icons2/3005/PNG/512/modules_apps_icon_188198.png" alt="Curso" style="width: 100px; height: 100px;"></div>
+</div>
+@* ACA OCULTE EL VIDEO *@
+<video width="640" height="360" controls hidden="hidden">
+        <source src='http://localhost:9000/contenidos/32e05a70-59df-4752-82ce-ef8c28a7f5c3_Desktop%202024.05.07%20-%2009.22.19.02.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minio%2F20240508%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240508T224950Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=43d011130412e221147ee86db2f2cf1928c4840f6c312a3917068ea60b2e7c55' type="video/mp4">
+        Tu navegador no soporta la reproducción de vídeo.
+    </video>
+@foreach (var curso in Model){
+    var idcurso = curso.cursoId;
+    <div class="card m-1" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">@curso.titulo</h5>
+            <p class="card-text">@curso.descripcion.</p>
+            <a href="@Url.Action("Curso", "Student", new { id = curso.cursoId, iterador = 0 })"><button type="button" class="btn btn-primary">Ver modulos</button></a>
+        </div>
+    </div>
+}
+<script>
+    var valor = sessionStorage.getItem('UserRole');
+    var idusersession = sessionStorage.getItem('UserID');
+    
+    console.log("UserRole:"+valor);
+    if(valor == 2){
+        console.log("eres admin, fuera de aqui");
+        window.location.href = "http://localhost:5053/Nurse/Index";
+    }
+        function mostrarmodulos(idcurso) {
+            console.log(idcurso+"mostrando modulos"+idusersession);
+
+            fetch('http://localhost:5053/api/Modulos/Curso/'+idcurso, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data['$values'][0].moduloID);
+                var idmodulo = data['$values'][0].moduloID;
+                postProgreso(idmodulo, idcurso);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error al obtener el curso'+idusersession);
+            });
+        }
+        function postProgreso(idmodulo, idcurso) {
+            console.log(idmodulo+"hola:"+idcurso);
+            var plan = {
+                progresoId: 54,
+                moduloActual: idmodulo,
+                completo: false,
+                contenidoId: 12,
+                usuarioId: idusersession,
+                cursoId: idcurso,
+            };
+
+            fetch('http://localhost:5053/api/progreso/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(plan)
+            })            
+            .then(response => {
+                console.log('Error:', response);
+                if (!response.ok) {
+                    
+                    throw new Error('Network response was not ok');
+                    
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success2:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error al mostrar progreso el curso'+error);
+            });
+        }
+</script>
+</body>
+</html>

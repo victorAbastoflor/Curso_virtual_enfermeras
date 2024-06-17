@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|c:\\users\\victor123\\onedrive\\im\u00E1genes\\debut\\nuevo\\curso_virtual_enfermeras\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|solutionrelative:models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|c:\\users\\victor123\\onedrive\\im\u00E1genes\\debut\\nuevo\\curso_virtual_enfermeras\\models\\dto\\usuariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|solutionrelative:models\\dto\\usuariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|c:\\users\\victor123\\onedrive\\im\u00E1genes\\debut\\nuevo\\curso_virtual_enfermeras\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|solutionrelative:controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|c:\\users\\victor123\\onedrive\\im\u00E1genes\\debut\\nuevo\\curso_virtual_enfermeras\\controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F3DFAF6F-AE1D-4F22-9BCC-7748A3218D43}|NurseCourse.csproj|solutionrelative:controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,6 +31,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\Models\\Usuario.cs",
+              "RelativeDocumentMoniker": "Models\\Usuario.cs",
+              "ToolTip": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\Models\\Usuario.cs",
+              "RelativeToolTip": "Models\\Usuario.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T03:01:42.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UsuarioDto.cs",
+              "DocumentMoniker": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\Models\\Dto\\UsuarioDto.cs",
+              "RelativeDocumentMoniker": "Models\\Dto\\UsuarioDto.cs",
+              "ToolTip": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\Models\\Dto\\UsuarioDto.cs",
+              "RelativeToolTip": "Models\\Dto\\UsuarioDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T03:01:00.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UsuariosController.cs",
+              "DocumentMoniker": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\Controllers\\UsuariosController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsuariosController.cs",
+              "ToolTip": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\Controllers\\UsuariosController.cs",
+              "RelativeToolTip": "Controllers\\UsuariosController.cs",
+              "ViewState": "AQIAAF4AAAAAAAAAAAAAwOkAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T02:59:59.088Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "AccessController.cs",
               "DocumentMoniker": "C:\\Users\\VICTOR123\\OneDrive\\Im\u00E1genes\\Debut\\nuevo\\Curso_virtual_enfermeras\\Controllers\\AccessController.cs",
               "RelativeDocumentMoniker": "Controllers\\AccessController.cs",

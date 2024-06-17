@@ -1,0 +1,102 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="\css\stylex.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Iniciar Sesión</title>
+</head>
+<body>
+    <div class="mw-100 mh-100 p-5" style="background-image: url('/Resources/img/background.png'); background-size: cover; height: 100%; width: 100%;">
+        <div class="center">
+            <div class="left-section">
+                <div class="logo-section">
+                    <img src="https://png.pngtree.com/element_our/sm/20180410/sm_5acd1797b5783.jpg" width="60" height="55">
+                </div>
+                <div class="login-text-section">
+                    Inicia sesión en tu cuenta
+                </div>
+                <div class="text-welcome-section">
+                    ¿Tienes una cuenta? Inicia sesión aquí
+                </div>
+                <div class="">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" placeholder="Email" required>
+                </div>
+                <label for="password">Contraseña</label>
+                <div class="input-group mt-1">
+                    <input type="password" class="form-control" id="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility()">👁️</button>
+                </div>
+                <button type="button" class="btn btn-secondary mt-3" onclick="login()">Iniciar sesión</button>
+
+                <!-- Mensaje de error -->
+                <div id="error-message" class="text-danger mt-3" style="display: none;">
+                    Correo o contraseña incorrectos. Por favor, inténtalo de nuevo.
+                </div>
+
+                <div class="help-section">
+                    <a class="btn" asp-action="Registro" asp-controller="Login">¿No tienes una cuenta? Regístrate aquí.</a>
+                </div>
+            </div>
+
+            <div class="mh-100 mw-100" style="height: 100%; width: 100%;">
+                <img src="\Resources\img\compu5.jpg" height="100%" width="100%">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+            passwordInput.type === 'password' ? passwordInput.type = 'text' : passwordInput.type = 'password';
+        }
+
+        function login() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            var data = {
+                UserName: email,
+                Password: password
+            };
+
+            fetch('http://localhost:5053/api/Usuarios/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Correo o contraseña incorrectos');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data.rolId);
+                    sessionStorage.setItem('UserID', data.usuarioId);
+                    sessionStorage.setItem('UserRole', data.rolId);
+                    if (data.rolId == 2) {
+                        window.location.href = '/Nurse/Index';
+                        console.log('rol1');
+                    } else if (data.rolId == 1) {
+                        window.location.href = '/Student/Index';
+                        console.log('rol2');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                    var errorMessage = document.getElementById('error-message');
+                    errorMessage.style.display = 'block';
+                    errorMessage.innerText = error.message;
+                });
+        }
+    </script>
+</body>
+</html>
