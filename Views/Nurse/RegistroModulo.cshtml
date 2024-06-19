@@ -1,0 +1,279 @@
+@using NurseCourse.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Utiliza este layout si tienes uno, o define null para no usar ningún layout
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #F5F5F5;
+            background-size: cover;
+            background-blend-mode: darken;
+        }
+
+        .animation:hover {
+            transform: translateY(-3px);
+            border-bottom: 3px solid;
+            background-color: #dbdbdb;
+            transition: transform 0.2s;
+        }
+
+        .titlenurse {
+            background-color: #D9D9D9;
+            display: flex;
+            padding: 10px;
+            padding-left: 15px;
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        form {
+            background-color: #F5F5F5;
+            padding: 20px;
+            width: 500px;
+        }
+
+        .imgsection {
+            display: flex;
+            justify-content: flex-end;
+            margin-left: auto;
+        }
+
+        .subtitle {
+            padding: 2%;
+            background-color: black;
+            color: white;
+            width: 600px;
+        }
+
+        .container {
+            flex-direction: column;
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="titlenurse">
+        <h1 class="">Modulos</h1>
+        <div class="imgsection"><img src="https://cdn-icons-png.flaticon.com/512/6681/6681144.png" alt="Curso" style="width: 100px; height: 100px;"></div>
+    </div>
+    <div class="container mt-5">
+        <div>
+            <div class="subtitle">¡Crear un modulo nuevo!</div>
+            <div class="form-group mt-2">
+                <label for="moduloDropdown">Selecciona un curso para tu modulo:</label>
+                <select id="moduloDropdown" class="form-control w-50">
+                    <option value="">Selecciona un curso</option>
+                    @foreach (var curso in Model)
+                    {
+                        <option value="@curso.cursoId">@curso.titulo</option>
+                    }
+                </select>
+            </div>
+            <form id="crearContenidoFormVideo" enctype="multipart/form-data">
+                <div class="form-group" style="display: none;">
+                    <label for="tipoVideo">Tipo:</label>
+                    <input type="text" class="form-control" id="tipoVideo" name="Tipo" value="video">
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label for="textoVideo">Texto:</label>
+                    <textarea class="form-control" id="textoVideo" name="Texto">texto</textarea>
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label for="moduloIdVideo">ID del módulo:</label>
+                    <input type="number" class="form-control" id="moduloIdVideo" name="ModuloId">
+                </div>
+                <div class="form-group">
+                    <label for="fileVideo">Sube tu video para el módulo: MP4, MPEG-4 (OBLIGATORIO)</label>
+                    <input type="file" class="form-control-file" id="fileVideo" name="file" accept="video/mp4,video/mpeg4" onchange="validateVideoFile()">
+                </div>
+            </form>
+            <form id="crearContenidoFormPDF" enctype="multipart/form-data">
+                <div class="form-group" style="display: none;">
+                    <label for="tipoPDF">Tipo:</label>
+                    <input type="text" class="form-control" id="tipoPDF" name="Tipo" value="pdf">
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label for="textoPDF">Texto:</label>
+                    <textarea class="form-control" id="textoPDF" name="Texto">texto</textarea>
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label for="moduloIdPDF">ID del módulo:</label>
+                    <input type="number" class="form-control" id="moduloIdPDF" name="ModuloId">
+                </div>
+                <div class="form-group">
+                    <label for="filePDF">Sube tu PDF para el módulo: PDF (OBLIGATORIO)</label>
+                    <input type="file" class="form-control-file" id="filePDF" name="file" accept="application/pdf" onchange="validatePdfFile()">
+                </div>
+            </form>
+            <form>
+                <div class="form-group">
+                    <label for="nombre">Nombre del módulo:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="60">
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción del modulo:</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="enviarModulo()">Enviar</button>
+            </form>
+        </div>
+
+        <div id="tablaModulos">
+            <!-- Aquí se mostrará la tabla de módulos -->
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        var valor = sessionStorage.getItem('UserRole');
+        console.log("UserRole:" + valor);
+        if (valor == 1) {
+            console.log("Usted tiene rol de Usuario, No tiene Acceso");
+            window.location.href = "http://localhost:5053/Student/Index";
+        }
+        var moduloIdSeleccionado;
+        $(document).ready(function () {
+            $('#moduloDropdown').change(function () {
+                moduloIdSeleccionado = $(this).val();
+            });
+        });
+
+        function validateVideoFile() {
+            const fileInput = document.getElementById('fileVideo');
+            const filePath = fileInput.value;
+            const allowedExtensions = /(\.mp4|\.mpeg4)$/i;
+
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Solo se permiten archivos de video MP4 o MPEG-4.');
+                fileInput.value = '';
+                return false;
+            }
+        }
+
+        function validatePdfFile() {
+            const fileInput = document.getElementById('filePDF');
+            const filePath = fileInput.value;
+            const allowedExtensions = /(\.pdf)$/i;
+
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Solo se permiten archivos PDF.');
+                fileInput.value = '';
+                return false;
+            }
+        }
+
+        async function enviarModulo() {
+            try {
+                const nombre = document.getElementById('nombre').value;
+                const descripcion = document.getElementById('descripcion').value;
+                const cursoId = moduloIdSeleccionado;
+
+                // Verificar que se haya seleccionado un archivo de video
+                const fileVideo = document.getElementById('fileVideo').files[0];
+                if (!fileVideo) {
+                    alert('Por favor, seleccione un archivo de video.');
+                    return;
+                }
+
+                // Verificar que se haya seleccionado un archivo PDF
+                const filePDF = document.getElementById('filePDF').files[0];
+                if (!filePDF) {
+                    alert('Por favor, seleccione un archivo PDF.');
+                    return;
+                }
+
+                const modulo = {
+                    Nombre: nombre,
+                    Descripcion: descripcion,
+                    CursoId: cursoId
+                };
+
+                const response = await fetch('http://localhost:5053/api/Modulos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(modulo)
+                });
+
+                if (response.ok) {
+                    data = await response.json();
+                    console.log('Módulo creado exitosamente', data.moduloID);
+                    alert('Módulo creado exitosamente');
+                    enviarFormularioPDF(data.moduloID);
+                    enviarFormularioVideo(data.moduloID);
+                    // Limpiar los campos del formulario
+                    document.getElementById('nombre').value = '';
+                    document.getElementById('descripcion').value = '';
+                    document.getElementById('fileVideo').value = '';
+                    document.getElementById('filePDF').value = '';
+
+                } else {
+                    const errorMessage = await response.text();
+                    alert(`Error al crear el módulo: ${errorMessage}`);
+                }
+            } catch (error) {
+                console.error('Error al enviar el formulario:', error);
+                alert('Error al enviar el formulario');
+            }
+        }
+
+        async function enviarFormularioPDF(id) {
+            try {
+                const form = document.getElementById('crearContenidoFormPDF');
+                const formData = new FormData(form);
+
+                // Asignar el valor de ModuloId
+                formData.set('ModuloId', id);
+
+                const response = await fetch('http://localhost:5053/api/contenidos', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Contenido PDF creado exitosamente');
+                } else {
+                    const errorMessage = await response.text();
+                    alert(`Error al crear el contenido PDF: ${errorMessage}`);
+                }
+            } catch (error) {
+                console.error('Error al enviar el formulario PDF:', error);
+                alert('Error al enviar el formulario PDF');
+            }
+        }
+
+        async function enviarFormularioVideo(id) {
+            try {
+                const form = document.getElementById('crearContenidoFormVideo');
+                const formData = new FormData(form);
+
+                // Asignar el valor de ModuloId
+                formData.set('ModuloId', id);
+
+                const response = await fetch('http://localhost:5053/api/contenidos', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Contenido de video creado exitosamente');
+                } else {
+                    const errorMessage = await response.text();
+                    alert(`Error al crear el contenido de video: ${errorMessage}`);
+                }
+            } catch (error) {
+                console.error('Error al enviar el formulario de video:', error);
+                alert('Error al enviar el formulario de video');
+            }
+        }
+    </script>
+</body>
+</html>
